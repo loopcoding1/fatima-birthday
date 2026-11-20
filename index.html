@@ -395,32 +395,10 @@
 .letter-body .fade{opacity:1 !important;animation:none !important;}
 .fun-lock-note{color:#8a2438;font-weight:700;}
 
-/* dark mode: letter paper goes dark to match the rest of the site */
-:root{
-  --paper:#2a0f1a;
-  --paper-ink:#f5e8d0;
-  --paper-soft:#d3b59b;
-  --rose:#e2707f;
-}
-.letter-card{box-shadow:0 24px 60px rgba(0,0,0,.55);}
-.fun-lock-note{color:#f3d9a4;}
-
-/* contrast fix: backgrounds are dark even when the phone is in light mode,
-   so the ink variables must be light unconditionally */
-:root{
-  --ink:#f6e3d3;
-  --ink-soft:#dfae9f;
-}
-.btn-ghost{color:#f6e3d3;border-color:#d9ab55;background:rgba(0,0,0,.28);}
-.closing-note{color:#f3d9a4;}
+/* targeted fixes only: ghost buttons + closing note + reason card front */
+.btn-ghost{color:#57222f;background:rgba(255,250,241,.94);border:1.5px solid #a87c2a;}
+.closing-note{color:#f3d9a4;background:rgba(34,6,15,.8);padding:12px 20px;border-radius:14px;display:inline-block;border:1px solid rgba(217,171,85,.45);}
 .reason-front{color:#f6e3d3;}
-
-/* dark mode for real: page background stays dark even when the phone is in light mode,
-   so every light text on the page (and in the translucent sections) stays readable */
-:root{
-  --bg:#22060f;
-  --bg-deep:#16030a;
-}
 </style>
   </head>
   <body>

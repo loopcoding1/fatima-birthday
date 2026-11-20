@@ -404,6 +404,16 @@
 }
 .letter-card{box-shadow:0 24px 60px rgba(0,0,0,.55);}
 .fun-lock-note{color:#f3d9a4;}
+
+/* contrast fix: backgrounds are dark even when the phone is in light mode,
+   so the ink variables must be light unconditionally */
+:root{
+  --ink:#f6e3d3;
+  --ink-soft:#dfae9f;
+}
+.btn-ghost{color:#f6e3d3;border-color:#d9ab55;background:rgba(0,0,0,.28);}
+.closing-note{color:#f3d9a4;}
+.reason-front{color:#f6e3d3;}
 </style>
   </head>
   <body>

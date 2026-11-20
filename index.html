@@ -632,6 +632,7 @@
           setTimeout(function () {
             scene.style.display = "none";
             letterCard.classList.add("show");
+            bannerEl.style.display = "none";
             letterCard.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
             letterOpenedAt = Date.now();
             setTimeout(checkLetterRead, 15000);
@@ -641,6 +642,9 @@
 
         function closeEnvelope() {
           letterCard.classList.remove("show");
+          letterCard.style.display = "";
+          bannerEl.style.display = "";
+          funSections.style.display = "none";
           scene.style.display = "";
           requestAnimationFrame(function () {
             scene.classList.remove("gone");
@@ -717,16 +721,13 @@
         var toGameBtn = document.getElementById("toGameBtn");
         function scrollToEl(el) { el.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" }); }
         if (funBtn) funBtn.addEventListener("click", function () {
-          funSections.hidden = false;
-          scrollToEl(funSections);
+          showStep("cake");
         });
         toReasonsBtn.addEventListener("click", function () {
-          reasonsSec.hidden = false;
-          scrollToEl(reasonsSec);
+          showStep("reasons");
         });
         toGameBtn.addEventListener("click", function () {
-          gameSec.hidden = false;
-          scrollToEl(gameSec);
+          showStep("game");
         });
 
         /* ---- letter must be read fully before the fun unlocks ---- */
@@ -759,12 +760,10 @@
         var toHeartBtn = document.getElementById("toHeartBtn");
         var toQuestionBtn = document.getElementById("toQuestionBtn");
         if (toHeartBtn) toHeartBtn.addEventListener("click", function () {
-          heartSec.hidden = false;
-          scrollToEl(heartSec);
+          showStep("heart");
         });
         if (toQuestionBtn) toQuestionBtn.addEventListener("click", function () {
-          questionSec.hidden = false;
-          scrollToEl(questionSec);
+          showStep("question");
         });
         var noBtn = document.getElementById("noBtn");
         var questionBtns = document.getElementById("questionBtns");
@@ -886,7 +885,7 @@
           gameAgainBtn.hidden = false;
           finaleSec.hidden = false;
           celebrate(gameArea);
-          setTimeout(function () { scrollToEl(finaleSec); }, 900);
+          setTimeout(function () { showStep("finale"); }, 900);
         }
         function startGame() {
           score = 0; timeLeft = 30; gameRunning = true;
@@ -912,6 +911,28 @@
         gameStartBtn.addEventListener("click", startGame);
         gameAgainBtn.addEventListener("click", startGame);
 
+        /* ---- one stage per page ---- */
+        var bannerEl = document.querySelector(".banner");
+        var closingNote = document.querySelector(".closing-note");
+        var funStepSecs = [cakeSec, reasonsSec, gameSec, finaleSec, heartSec, questionSec];
+        var funStepNames = ["cake", "reasons", "game", "finale", "heart", "question"];
+        function showStep(name) {
+          bannerEl.style.display = "none";
+          scene.style.display = "none";
+          tapHint.style.display = "none";
+          letterCard.style.display = "none";
+          closingNote.style.display = (name === "question") ? "" : "none";
+          funSections.hidden = false;
+          funSections.style.display = "";
+          funStepSecs.forEach(function (s) { s.hidden = false; });
+          cakeSec.style.display = (name === "cake") ? "" : "none";
+          reasonsSec.style.display = (name === "reasons") ? "" : "none";
+          gameSec.style.display = (name === "game") ? "" : "none";
+          finaleSec.style.display = (name === "finale") ? "" : "none";
+          heartSec.style.display = (name === "heart") ? "" : "none";
+          questionSec.style.display = (name === "question") ? "" : "none";
+          window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+        }
       })();
     </script>
   </body>

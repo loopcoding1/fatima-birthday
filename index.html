@@ -386,7 +386,7 @@
       <h2>هاد الرسالة خاصة بفاطمة وحدها</h2>
       <p>دخلي الكود السري باش تفتحي الظرف</p>
       <input class="lock-pin" id="lockPin" type="tel" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••" aria-label="الكود السري" />
-      <p class="lock-hint">التلميح: تاريخ ميلادك (اليوم والشهر) 🎂</p>
+      <p class="lock-hint">التلميح: تاريخ ميلاد حبيبك 💕 — 4 أرقام (الشهر واليوم)، مثال: 0101</p>
       <p class="lock-error" id="lockError" aria-live="polite"></p>
     </div>
     <audio id="bgMusic" loop autoplay preload="auto" src="song.mp3"></audio>
@@ -629,7 +629,7 @@
         var lockScreen = document.getElementById("lockScreen");
         var lockPin = document.getElementById("lockPin");
         var lockError = document.getElementById("lockError");
-        var LOCK_CODE = "2111";
+        var LOCK_CODE = "0929";
         function unlock() {
           lockScreen.classList.add("unlocked");
           startMusic();

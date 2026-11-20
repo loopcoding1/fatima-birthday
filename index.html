@@ -387,6 +387,8 @@
 .question-btns{position:relative;min-height:130px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:10px;}
 #noBtn{transition:left .25s ease,top .25s ease;}
 .no-hint{color:#ffe9a8;font-size:16px;}
+
+.fun-lock-note{color:#f3d9a4;font-size:15px;margin:10px 0 0;}
 </style>
   </head>
   <body>
@@ -459,7 +461,8 @@
 
         <div class="actions">
           <button class="btn btn-ghost" id="closeBtn" type="button">إعادة إغلاق الظرف</button>
-          <button class="btn btn-gold" id="funBtn" type="button">كملي المفاجآت 🎉</button>
+          <p class="fun-lock-note" id="funLockNote">قراي الرسالة كاملة باش تكملي المفاجآت ❤️</p>
+          <button class="btn btn-gold" id="funBtn" type="button" hidden>كملي المفاجآت 🎉</button>
         </div>
       </article>
 
@@ -630,6 +633,8 @@
             scene.style.display = "none";
             letterCard.classList.add("show");
             letterCard.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+            letterOpenedAt = Date.now();
+            setTimeout(checkLetterRead, 15000);
             opening = false;
           }, reduced ? 350 : 2350);
         }
@@ -723,6 +728,30 @@
           gameSec.hidden = false;
           scrollToEl(gameSec);
         });
+
+        /* ---- letter must be read fully before the fun unlocks ---- */
+        var funLockNote = document.getElementById("funLockNote");
+        var letterOpenedAt = 0;
+        var signatureSeen = false;
+        function checkLetterRead() {
+          if (signatureSeen && Date.now() - letterOpenedAt >= 15000) {
+            funBtn.hidden = false;
+            funLockNote.hidden = true;
+          }
+        }
+        if ("IntersectionObserver" in window) {
+          var sigObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                signatureSeen = true;
+                sigObserver.disconnect();
+                checkLetterRead();
+              }
+            });
+          }, { threshold: 0.5 });
+          var sigEl = letterCard.querySelector(".signature");
+          if (sigEl) sigObserver.observe(sigEl);
+        }
 
         /* ---- beating heart + big question ---- */
         var heartSec = document.getElementById("heartSec");

@@ -387,11 +387,6 @@
 .question-btns{position:relative;min-height:130px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:10px;}
 #noBtn{transition:left .25s ease,top .25s ease;}
 .no-hint{color:#ffe9a8;font-size:16px;}
-
-/* typewriter caret */
-.typing::after{content:"▍";animation:blink 1s steps(1) infinite;color:#f3d9a4;}
-@keyframes blink{50%{opacity:0}}
-@media (prefers-reduced-motion: reduce){.typing::after{animation:none;content:"";}}
 </style>
   </head>
   <body>
@@ -486,7 +481,7 @@
             <div class="plate"></div>
           </div>
           <p class="cake-count" id="cakeCount">باقي 5 شمعات</p>
-          <p class="cake-wish type-on-view" id="cakeWish" hidden>✨ أمنيتك غادي تتحقق… وأمنيتي أنا هي نبقى معاك طول العمر ❤️</p>
+          <p class="cake-wish" id="cakeWish" hidden>✨ أمنيتك غادي تتحقق… وأمنيتي أنا هي نبقى معاك طول العمر ❤️</p>
           <button class="btn btn-gold" id="toReasonsBtn" type="button" hidden>كملي المفاجأة 💌</button>
         </section>
 
@@ -503,14 +498,14 @@
           <p class="fun-sub">جمعي أكبر عدد من القلوب فـ 30 ثانية — القلب الذهبي 💛 كيساوي 3!</p>
           <div class="game-bar"><span id="gameScore">❤️ 0</span><span id="gameTime">⏱ 30</span><button class="btn btn-gold btn-small" id="gameStartBtn" type="button">ابدئي اللعب</button></div>
           <div class="game-area" id="gameArea"></div>
-          <p class="game-result type-on-view" id="gameResult" hidden></p>
+          <p class="game-result" id="gameResult" hidden></p>
           <button class="btn btn-gold" id="gameAgainBtn" type="button" hidden>العبّي مرة أخرى</button>
         </section>
 
         <section class="fun-sec finale" id="finaleSec" hidden>
           <h2>عيد ميلاد سعيد يا فاطمة ❤️</h2>
-          <p class="type-on-view">لعبتي، وطفيتي الشمعات، وقريتي كل الأسباب… وباقي عندي سبب واحد أخير: أنتِ أجمل هدية جاتني فهاد الدنيا.</p>
-          <p class="type-on-view">كل عام وأنتِ حبيبتي، وكل عام وأنتِ معايا. كانبغيك بزاف ❤️</p>
+          <p>لعبتي، وطفيتي الشمعات، وقريتي كل الأسباب… وباقي عندي سبب واحد أخير: أنتِ أجمل هدية جاتني فهاد الدنيا.</p>
+          <p>كل عام وأنتِ حبيبتي، وكل عام وأنتِ معايا. كانبغيك بزاف ❤️</p>
           <button class="btn btn-gold" id="toHeartBtn" type="button">عندي سؤال ليك 💍</button>
         </section>
 
@@ -522,7 +517,7 @@
         </section>
 
         <section class="fun-sec question-sec" id="questionSec" hidden>
-          <h2 class="type-on-view" data-type-speed="55">واش تقبلي تكوني معايا طول العمر؟ 💍</h2>
+          <h2>واش تقبلي تكوني معايا طول العمر؟ 💍</h2>
           <p class="fun-sub">فكري مزيان… ولكن قلبي عارف الجواب 😄</p>
           <div class="question-btns" id="questionBtns">
             <a class="btn btn-gold" id="yesBtn" href="https://wa.me/212767844367?text=%D9%86%D8%B9%D9%85" target="_blank" rel="noopener">إيه ❤️</a>
@@ -635,7 +630,6 @@
             scene.style.display = "none";
             letterCard.classList.add("show");
             letterCard.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
-            typeLetter();
             opening = false;
           }, reduced ? 350 : 2350);
         }
@@ -817,7 +811,6 @@
           card.addEventListener("click", function () {
             if (card.classList.contains("flipped")) return;
             card.classList.add("flipped");
-            typeText(card.querySelector(".reason-back"), null, 26);
             flippedCount++;
             reasonsCount.textContent = "قلبتي " + flippedCount + " من 21";
             if (flippedCount === REASONS.length) {
@@ -890,63 +883,6 @@
         gameStartBtn.addEventListener("click", startGame);
         gameAgainBtn.addEventListener("click", startGame);
 
-        /* ---- typewriter ---- */
-        function typeText(el, done, speed) {
-          if (el.dataset.fullText === undefined) el.dataset.fullText = el.textContent;
-          if (el.dataset.fullHtml === undefined) el.dataset.fullHtml = el.innerHTML;
-          var full = el.dataset.fullText, html = el.dataset.fullHtml;
-          if (reduced || el.dataset.typed === "1") { el.innerHTML = html; if (done) done(); return; }
-          el.dataset.typed = "1";
-          var ms = (typeof speed === "number") ? speed : (el.dataset.typeSpeed ? parseInt(el.dataset.typeSpeed, 10) : 22);
-          el.textContent = "";
-          el.classList.add("typing");
-          var i = 0, finished = false;
-          function finish() {
-            if (finished) return;
-            finished = true;
-            clearInterval(timer);
-            el.classList.remove("typing");
-            el.innerHTML = html;
-            if (done) done();
-          }
-          var timer = setInterval(function () {
-            i++;
-            el.textContent = full.slice(0, i);
-            if (i >= full.length) finish();
-          }, ms);
-          el.addEventListener("click", finish, { once: true });
-        }
-        function typeLetter() {
-          var seq = [];
-          var h2 = letterCard.querySelector("h2");
-          var salut = letterCard.querySelector(".salut");
-          if (h2) seq.push([h2, 60]);
-          if (salut) seq.push([salut, 30]);
-          Array.prototype.forEach.call(letterCard.querySelectorAll(".letter-body p"), function (p) { seq.push([p, 14]); });
-          var idx = 0;
-          function next() {
-            if (idx >= seq.length) return;
-            var item = seq[idx++];
-            typeText(item[0], next, item[1]);
-          }
-          next();
-        }
-        /* lock screen title types first */
-        var lockTitle = lockScreen.querySelector("h2");
-        var lockSub = lockScreen.querySelector("p");
-        if (lockTitle) typeText(lockTitle, function () { if (lockSub) typeText(lockSub, null, 30); }, 55);
-        /* type on scroll into view */
-        if ("IntersectionObserver" in window) {
-          var typedObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) {
-                typeText(entry.target);
-                typedObserver.unobserve(entry.target);
-              }
-            });
-          }, { threshold: 0.3 });
-          Array.prototype.forEach.call(document.querySelectorAll(".type-on-view"), function (el) { typedObserver.observe(el); });
-        }
       })();
     </script>
   </body>
